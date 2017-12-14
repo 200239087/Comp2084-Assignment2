@@ -18,14 +18,17 @@ namespace Comp2084_Assignment2.Models
 
         [Required]
         [StringLength(50)]
+        [Display(Name = "Console")]
         public string name { get; set; }
 
         [Required]
         [StringLength(50)]
+        [Display(Name = "Company")]
         public string company { get; set; }
 
         [Required]
         [StringLength(50)]
+        [Display(Name = "Company Website")]
         public string bio_link { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

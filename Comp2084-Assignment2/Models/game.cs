@@ -12,14 +12,17 @@ namespace Comp2084_Assignment2.Models
 
         [Required]
         [StringLength(50)]
+        [Display(Name = "Game")]
         public string title { get; set; }
 
         [Required]
         [StringLength(50)]
+        [Display(Name = "Manufacturer")]
         public string company { get; set; }
 
         [Required]
         [StringLength(50)]
+        [Display(Name = "Rating")]
         public string rating { get; set; }
 
         public int console_id { get; set; }
