@@ -10,17 +10,20 @@ using Comp2084_Assignment2.Models;
 
 namespace Comp2084_Assignment2.Controllers
 {
+    [Authorize]
     public class ConsolesController : Controller
     {
         private GameListModel db = new GameListModel();
 
         // GET: Consoles
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return View(db.consoles.ToList());
         }
 
         // GET: Consoles/Details/5
+        [AllowAnonymous]
         public ActionResult Details(int? id)
         {
             if (id == null)

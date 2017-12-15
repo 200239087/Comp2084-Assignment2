@@ -10,11 +10,13 @@ using Comp2084_Assignment2.Models;
 
 namespace Comp2084_Assignment2.Controllers
 {
+    [Authorize]
     public class GamesController : Controller
     {
         private GameListModel db = new GameListModel();
 
         // GET: Games
+        [AllowAnonymous]
         public ActionResult Index()
         {
             var games = db.games.Include(g => g.console);
@@ -22,6 +24,7 @@ namespace Comp2084_Assignment2.Controllers
         }
 
         // GET: Games/Details/5
+        [AllowAnonymous]
         public ActionResult Details(int? id)
         {
             if (id == null)

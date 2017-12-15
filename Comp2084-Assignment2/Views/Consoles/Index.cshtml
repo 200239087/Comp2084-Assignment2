@@ -7,9 +7,12 @@
 
 <h2>Consoles List</h2>
 
+@if (User.Identity.IsAuthenticated)
+{
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+}
 <table class="table">
     <tr>
         <th>
@@ -21,7 +24,7 @@
         <th>
             @Html.DisplayNameFor(model => model.bio_link)
         </th>
-        <th></th>
+        <th>Actions</th>
     </tr>
 
 @foreach (var item in Model) {
@@ -36,9 +39,14 @@
             @Html.DisplayFor(modelItem => item.bio_link)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.id })
+            @if (User.Identity.IsAuthenticated)
+            {
+                <br />
+            @Html.ActionLink("Edit", "Edit", new { id=item.id })
+                <br />
             @Html.ActionLink("Delete", "Delete", new { id=item.id })
+            }
         </td>
     </tr>
 }
