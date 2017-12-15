@@ -5,7 +5,7 @@
 
 <p>This application takes an extensive library of video games and consoles and neatly organizes them in an easy to read table.</p>
 <p>This application is equipped with CRUD (Create, Read, Update, Delete) so that data can be added changed and deleted simpily.</p>
-
+<p>Equipped with SSL to force Https.</p> 
 
 <p>Visit the Live site at: <a href="http://comp2084-assignment-2.azurewebsites.net/">http://comp2084-assignment-2.azurewebsites.net/</a></p>
 <p>This application uses and is powered through ASP.NET MVC, SQL Server, Twitter Bootstrap and jQuery.</p>
