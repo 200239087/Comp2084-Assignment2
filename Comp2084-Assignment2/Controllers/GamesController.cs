@@ -13,28 +13,41 @@ namespace Comp2084_Assignment2.Controllers
     [Authorize]
     public class GamesController : Controller
     {
-        private GameListModel db = new GameListModel();
+        // db connection moved to Models/EFGamesRepository.cs
+        //private GameListModel db = new GameListModel();
+
+        private IGamesRepository db;
+
+            public GamesController()
+        {
+            this.db = new EFGamesRepository();
+        }
+
+        public GamesController(IGamesRepository db)
+        {
+            this.db = db;
+        }
 
         // GET: Games
         [AllowAnonymous]
-        public ActionResult Index()
+        public ViewResult Index()
         {
-            var games = db.games.Include(g => g.console);
+            var games = db.Games.Include(g => g.console);
             return View(games.ToList());
         }
 
         // GET: Games/Details/5
         [AllowAnonymous]
-        public ActionResult Details(int? id)
+        public ViewResult Details(int? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return View("Error");
             }
-            game game = db.games.Find(id);
+            game game = db.Games.FirstOrDefault(a => a.id == id);
             if (game == null)
             {
-                return HttpNotFound();
+                return View("Error");
             }
             return View(game);
         }
@@ -42,7 +55,7 @@ namespace Comp2084_Assignment2.Controllers
         // GET: Games/Create
         public ActionResult Create()
         {
-            ViewBag.console_id = new SelectList(db.consoles, "id", "name");
+            ViewBag.console_id = new SelectList(db.Consoles, "id", "name");
             return View();
         }
 
@@ -55,12 +68,11 @@ namespace Comp2084_Assignment2.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.games.Add(game);
-                db.SaveChanges();
+                db.Save(game);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.console_id = new SelectList(db.consoles, "id", "name", game.console_id);
+            ViewBag.console_id = new SelectList(db.Consoles, "id", "name", game.console_id);
             return View(game);
         }
 
@@ -69,14 +81,14 @@ namespace Comp2084_Assignment2.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return View("Error");
             }
-            game game = db.games.Find(id);
+            game game = db.Games.FirstOrDefault(a => a.id == id);
             if (game == null)
             {
-                return HttpNotFound();
+                return View("Error");
             }
-            ViewBag.console_id = new SelectList(db.consoles, "id", "name", game.console_id);
+            ViewBag.console_id = new SelectList(db.Consoles, "id", "name", game.console_id);
             return View(game);
         }
 
@@ -89,11 +101,10 @@ namespace Comp2084_Assignment2.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(game).State = EntityState.Modified;
-                db.SaveChanges();
+                db.Save(game);
                 return RedirectToAction("Index");
             }
-            ViewBag.console_id = new SelectList(db.consoles, "id", "name", game.console_id);
+            ViewBag.console_id = new SelectList(db.Consoles, "id", "name", game.console_id);
             return View(game);
         }
 
@@ -102,12 +113,12 @@ namespace Comp2084_Assignment2.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return View("Error");
             }
-            game game = db.games.Find(id);
+            game game = db.Games.FirstOrDefault(a => a.id == id);
             if (game == null)
             {
-                return HttpNotFound();
+                return View("Error");
             }
             return View(game);
         }
@@ -115,21 +126,31 @@ namespace Comp2084_Assignment2.Controllers
         // POST: Games/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ViewResult DeleteConfirmed(int? id)
         {
-            game game = db.games.Find(id);
-            db.games.Remove(game);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (id == null)
+            {
+                return View("Error");
+            }
+
+            game game = db.Games.FirstOrDefault(a => a.id == id);
+
+            if (game == null)
+            {
+                return View("Error");
+            }
+
+            db.Delete(game);
+            return View("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        db.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
     }
 }
